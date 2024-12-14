@@ -63,6 +63,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.accompanist.placeholder.material)
 
     // Dagger Hilt
     implementation(libs.hiltAndroid)
