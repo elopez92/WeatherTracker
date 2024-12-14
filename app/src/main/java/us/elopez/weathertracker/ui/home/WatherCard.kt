@@ -2,6 +2,7 @@ package us.elopez.weathertracker.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -39,7 +38,7 @@ fun WeatherCard(weather: WeatherData) {
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // Weather Icon on the Right
@@ -56,7 +55,11 @@ fun WeatherCard(weather: WeatherData) {
                 Text(text = weather.cityName, style = MaterialTheme.typography.headlineMedium)
                 WindDirectionArrow(degrees = weather.windDirection)
             }
-            Text(text = " ${weather.temperature.roundToInt()}°", fontSize = 48.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = " ${weather.temperature.roundToInt()}°",
+                fontSize = 48.sp,
+                fontWeight = FontWeight.Bold
+            )
 
             Card(
                 modifier = Modifier.padding(8.dp),
@@ -69,12 +72,12 @@ fun WeatherCard(weather: WeatherData) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly // Space sections evenly
                 ) {
-                WeatherInfoSection("Humidity", "${weather.humidity}%")
-                WeatherInfoSection("UV Index", weather.uvIndex.roundToInt().toString())
-                WeatherInfoSection("Feels Like", "${weather.feelsLike.roundToInt()}°")
+                    WeatherInfoSection("Humidity", "${weather.humidity}%")
+                    WeatherInfoSection("UV Index", weather.uvIndex.roundToInt().toString())
+                    WeatherInfoSection("Feels Like", "${weather.feelsLike.roundToInt()}°")
+                }
             }
-        }
-                
+
         }
 
 }
