@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,11 +32,16 @@ fun CityResultCard(
     weatherData: WeatherData,
     onCitySelected: (WeatherData) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current // Access the keyboard controller
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onCitySelected(weatherData) },
+            .clickable {
+                keyboardController?.hide()
+                onCitySelected(weatherData)
+                       },
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFF2F2F2)
         ),

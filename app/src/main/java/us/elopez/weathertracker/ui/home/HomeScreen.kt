@@ -40,16 +40,29 @@ fun HomeScreen(viewModel: WeatherViewModel = hiltViewModel()) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Search Bar: Overlays the rest of the screen
-        SearchBar(
-            query = uiState.query,
-            onQueryChange = { viewModel.updateQuery(it) },
-            onSearch = { viewModel.searchWeather(it) },
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .zIndex(1f) // Ensure it's always on top
-        )
+        ) {
+            // Search Bar
+            SearchBar(
+                query = uiState.query,
+                onQueryChange = { viewModel.updateQuery(it) },
+                onSearch = { viewModel.searchWeather(it) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // City Result Card (only visible if there’s a search result)
+            searchResult?.let { result ->
+                CityResultCard(
+                    weatherData = result,
+                    onCitySelected = { selectedCity ->
+                        viewModel.selectCity(selectedCity)
+                    }
+                )
+            }
+        }
 
         // Main Content: Centered below the search bar
         Box(
@@ -64,6 +77,9 @@ fun HomeScreen(viewModel: WeatherViewModel = hiltViewModel()) {
                 /*uiState.error != null -> {
                     Text(text = uiState.error!!, color = Color.Red)
                 }*/
+                searchResult != null -> {
+                    // Do nothing if search results are being displayed
+                }
                 uiState.weatherData != null -> {
                     WeatherCard(weather = uiState.weatherData!!)
                 }
