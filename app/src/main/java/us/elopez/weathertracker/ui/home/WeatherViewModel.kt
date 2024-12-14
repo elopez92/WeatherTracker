@@ -23,6 +23,9 @@ class WeatherViewModel @Inject constructor(
     preferencesManager: PreferencesManager
 ) : ViewModel() {
 
+    private val _searchResult = MutableStateFlow<WeatherData?>(null)
+    val searchResult: StateFlow<WeatherData?> = _searchResult.asStateFlow()
+
     private val _uiState = MutableStateFlow(WeatherUiState())
     val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
 
@@ -43,10 +46,23 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val weather = getWeatherUseCase(city)
-                _uiState.update { it.copy(weatherData = weather) }
-                saveCityUseCase(city) // Persist city
+                _searchResult.value = weather
             } catch (e: Exception) {
+                _searchResult.value = null // Clear the result on error
                 _uiState.update { it.copy(error = "City not found or network error") }
+            }
+        }
+    }
+
+    // Selects the city from the search result and updates the main city weather
+    fun selectCity(weatherData: WeatherData) {
+        viewModelScope.launch {
+            try {
+                saveCityUseCase(weatherData.cityName) // Persist the city name
+                _uiState.update { it.copy(weatherData = weatherData, error = null) }
+                _searchResult.value = null // Clear the search result after selection
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = "Failed to save selected city") }
             }
         }
     }
