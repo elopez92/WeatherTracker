@@ -20,6 +20,7 @@ import us.elopez.weathertracker.ui.theme.AppBlack
 
 @Composable
 fun HomeScreen(viewModel: WeatherViewModel = hiltViewModel()) {
+    val searchResult by viewModel.searchResult.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
 
     Column(modifier = Modifier
@@ -31,6 +32,16 @@ fun HomeScreen(viewModel: WeatherViewModel = hiltViewModel()) {
             onQueryChange = { viewModel.updateQuery(it) },
             onSearch = { viewModel.searchWeather(it) }
         )
+
+        // Display search result card if available
+        searchResult?.let { weatherData ->
+            CityResultCard(
+                weatherData = weatherData,
+                onCitySelected = { selectedCity ->
+                    viewModel.selectCity(selectedCity)
+                }
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
