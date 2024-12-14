@@ -71,7 +71,7 @@ fun WeatherCard(weather: WeatherData) {
                     horizontalArrangement = Arrangement.SpaceEvenly // Space sections evenly
                 ) {
                     WeatherInfoSection("Humidity", "${weather.humidity}%")
-                    WeatherInfoSection("UV Index", weather.uvIndex.roundToInt().toString())
+                    WeatherInfoSection("UV", weather.uvIndex.roundToInt().toString())
                     WeatherInfoSection("Feels Like", "${weather.feelsLike.roundToInt()}°")
                 }
             }
@@ -93,7 +93,9 @@ fun WeatherInfoSection(header: String, info: String) {
             fontSize = if (header == "Feels Like") 12.sp else 16.sp)
         Text(
             text = info,
-            modifier = Modifier.padding(top = 8.dp),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(top = 2.dp),
             color = AppDarkGray)
     }
 }
